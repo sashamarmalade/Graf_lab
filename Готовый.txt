@@ -1,0 +1,139 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+void checkif(int& n)//проверяет сколько всего элементов в текстовом файле 
+{
+	int v;
+	ifstream file;
+	file.open("C:\\prog\\file.txt", ios::in);//открываем файл для чтения 
+	if (file.is_open())
+	{
+		file >> v;
+		while (!file.eof())//проверяем, достигнут ли конец файла 
+		{
+			file >> v;//считываем значение из файла просто чтобы !file.eof() работала правильно 
+			if(v % 2 == 0)
+			n++;
+		}
+		if(n!=0)
+		cout << "Количество четных чисел в файле:" << n << endl;
+		else
+		cout << "Не найдены четные элементы" <<  endl;
+	}
+	file.close();
+}
+
+int main()
+{
+	setlocale(0, "");
+	cout << "Задание 1" << endl;
+	int n = 0, p, i=0;
+	checkif(n);
+	int* a = new int[n];
+	string path = "C:\\prog\\file.txt";
+	ifstream file;
+	file.open(path);
+	while (!file.eof())//проверяем, достигнут ли конец файла 
+	{
+		file >> p;//считываем значение из файла просто чтобы !file.eof() работала правильно 
+		if (p % 2 == 0)
+		{
+			a[i] = p;
+			i++;
+		}
+	}
+	if (!file.is_open())
+	{
+		cout << "Ошибка открытия файла\n";
+	}
+	else
+	{
+		cout << "Файл открыт\n";
+	}
+	file.close();
+
+	//упорядочить по возрастанию 
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - i - 1; j++)
+		{
+			if (a[j] > a[j + 1]) {
+				// меняем элементы местами 
+				int t = a[j];
+				a[j] = a[j + 1];
+				a[j + 1] = t;
+			}
+		}
+	}
+	cout << "Четные элементы:" << endl;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - i - 1; j++)
+		{
+			if (a[j] > a[j + 1])
+			{
+				// меняем элементы местами 
+				int t = a[j];
+				a[j] = a[j + 1];
+				a[j + 1] = t;
+			}
+		}
+	}
+	for (int i = 0; i < n; ++i)
+	{
+		//if (a[i] % 2 == 0)
+			cout << a[i] << endl;
+	}
+	
+
+	delete[]a;
+	cout << "Задание 2" << endl;
+	setlocale(0, "");
+	int A, B, N;
+	cout << "Введите A:" << endl;	cin >> A;
+	cout << "Введите B:" << endl;	cin >> B;
+	cout << "Введите размер массива:" << endl; cin >> N;
+	int* M = new int[N];
+	cout << "Исходный массив:" << endl;
+	for (int i = 0; i < N; i++)
+	{
+		M[i] = A + rand() % ((B + 1) - A);
+		cout << " " << M[i];
+	}
+	cout << endl;
+	int ch = 0;
+	int k = 0;
+	int nechet = 0;
+	//кол-во четных элементов 
+	while (k < N)
+	{
+		if (M[k] % 2 == 0)
+		{
+			ch += 1;
+		}
+		k++;
+	}
+	cout << "Количество четных элементов:" << ch << endl;
+	//сжимаем массив
+	nechet = N - ch;
+	int* b = new int[N - nechet];
+	int now = 0;
+	for (int i = 0; i < N; i++)
+	{
+		if (M[i] % 2 == 0) // проверяем значение на четность
+		{
+			b[now++] = M[i];  // если четное, то помещаем в новый массив         
+		}
+
+	}
+	cout << "Новый массив:";
+	for (int i = 0; i < now; i++)
+		cout << b[i] << " ";
+	cout << endl;
+
+	delete[]M;
+	return 0;
+
+}
