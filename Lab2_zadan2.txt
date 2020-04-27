@@ -1,0 +1,152 @@
+
+#include<iostream>
+#include<fstream>
+#include <cstdlib>
+#include <iomanip>
+#include <time.h>
+#include <vector>
+
+using namespace std;
+
+
+//Функция транспонирования матрицы
+int** TranspMatrix(int** Matrix, int& n, int& m)
+{
+	int** tMatrix = new int* [n];
+	for (int i = 0; i < n; i++)
+	{
+		tMatrix[i] = new int[m];
+	}
+	for (int i = 0; i < m; i++)
+		for (int j = 0; j < n; j++)
+			tMatrix[i][j] = Matrix[j][i];
+	int temp = n;
+	n = m;
+	m = temp;
+
+	return tMatrix;
+}
+
+int main() {
+	setlocale(LC_ALL, "RUS");
+	int n, m, ** A, ** C, i, j;
+	int** trA;
+	ifstream file;
+	cout << "Введите число строк и столбцов которые будут содержать матрицы:" << endl;
+	cout << "Строк:";
+	cin >> m;
+	cout << "Столбцов:";
+	cin >> n;
+	A = new int* [n];
+	C = new int* [m];
+	int* B = new int[n];
+	int* D = new int[m];
+	trA = new int* [n];
+
+	file.open("C:\\prog\\lab2\\file.txt");
+	if (!file.is_open())
+	{
+		cout << "Файл не может быть открыт";
+		exit(0);
+	}
+	for (int i = 0; i < n; i++)
+	{
+		A[i] = new int[m];
+	}
+	cout << "Матрица А:" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			file >> A[i][j];
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << "Транспонированная матрица А:" << endl;
+	trA = TranspMatrix(A, n, m);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cout << setw(4) << trA[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Матрица С:" << endl;
+	for (int i = 0; i < m; i++)
+	{
+		C[i] = new int[n];
+	}
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			file >> C[i][j];
+			cout << C[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << "Вектор В:" << endl;
+	for (i = 0; i < n; i++) {
+		file >> B[i];
+		cout << B[i] << endl;
+	}
+	cout << endl;
+	cout << "Вектор D:" << endl;
+	for (i = 0; i < m; i++)
+	{
+		file >> D[i];
+		cout << D[i] << endl;
+	}
+	cout << endl;
+	cout << "Умножение A транспонированной на B:" << endl;
+	int* AB = new int[n];
+	for (i = 0; i < n; i++)
+	{
+		AB[i] = 0;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++)
+		{
+			AB[i] += trA[i][j] * B[j];
+		}
+		cout << setw(4) << AB[i] << endl;
+	}
+	cout << "Умножение матрицы C на вектор D :" << endl;
+	int* CD = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		CD[i] = 0;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			CD[i] += C[i][j] * D[j];
+
+		}
+		cout << setw(4) << CD[i] << " ";
+	}
+	cout << endl;
+	cout << "Ответ:" << endl;
+	int* OT = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		OT[i] = 0;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			OT[i] = AB[i] - 10 * CD[i];
+
+		}
+		cout << OT[i] << " ";
+	}
+	cout << endl;
+	system("pause");
+}
