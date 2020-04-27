@@ -1,0 +1,78 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <iomanip>
+#include <cfloat>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	srand(time(NULL));
+	int max_ot = -INT_MAX, min_pol = INT_MAX;
+	int iN = -1, jN = -1, iP = -1, jP = -1, size, A, B;
+	cout << "size= "; cin >> size;
+	cout << "Минимальная граница: "; cin >> A;
+	cout << "Максимальная граница: "; cin >> B;
+	int** a = new int* [size];
+	for (int i = 0; i < size; i++)
+		a[i] = new int[size];
+	for (int i = 0; i < size; ++i)
+	{
+		for (int j = 0; j < size; ++j)
+		{
+			a[i][j] = A + rand() % ((B + 1) - A);
+			cout << setw(9) << a[i][j];
+
+			if ((i <= j) && (j <= size - i - 1))//Красная область
+			{
+				if (a[i][j] > 0)
+				{
+					if (min_pol > a[i][j])
+					{
+						min_pol = a[i][j];
+						iP = i;
+						jP = j;
+					}
+				}
+			}
+			else if ((i >= j) && (j >= size - i - 1))//Зеленая область
+			{
+				if (a[i][j] < 0)
+				{
+					if (max_ot < a[i][j])
+					{
+						max_ot = a[i][j];
+						iN = i;
+						jN = j;
+					}
+				}
+			}
+		}
+		cout << endl;
+	}
+
+	if (iN == -1) cout << "Отрицательных элементов в зеленой области НЕТ!" << endl;
+	if (iP == -1) cout << "Положительных элементов в красной области НЕТ!" << endl;
+
+	if (iN >= 0 && iP >= 0)
+	{
+		cout << endl << " Mаксимальный отрицательный элемент в зеленой области " << max_ot
+			<< "  Позиция: " << iN << "," << jN << endl;
+		cout << " Mинимальный положительный элемент в красной области " << min_pol
+			<< "  Позиция: " << iP << "," << jP << endl << endl;
+
+		swap(a[iP][jP], a[iN][jN]);//Замена элементов, если таковые имеются.
+
+		for (int i = 0; i < size; ++i)//Вывод нового массива
+		{
+			for (int j = 0; j < size; ++j)
+			{
+				cout << setw(9) << a[i][j];
+			}
+			cout << endl;
+		}
+	}
+	cout << endl;
+	return 0;
+}
