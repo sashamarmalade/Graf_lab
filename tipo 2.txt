@@ -1,0 +1,92 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+
+
+void Short_word(char* str, char* word, int lenght)//Ищем самое короткое слово и выводим его на экран
+{
+	int min = 100;
+	int count = 0;
+	int ws = 0;
+	for (int i = 0; i < lenght; i++)
+	{
+		if (str[i] == '\n') count = 0;
+		if (str[i] != '\n')
+		{
+			count++;
+			if (min > count)
+			{
+				min = count;
+				ws = i;
+			}
+		}
+		
+
+	}
+
+	int j = 0;
+	ws++;
+	for (int i = ws - min; i <= ws; i++)
+	{
+		word[j] = str[i];
+		j++;
+	}
+	word[j] = '\0';
+
+	cout << "Самое короткое слово в первой строке:  " << word;
+	cout << endl;
+	cout << "Длина слова: " << min << endl << endl;
+}
+
+void Razdelenie(char* str, int lenght)//Разделение строк на слова
+{
+	for (int i = 0; i < lenght; i++)
+	{
+		if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
+		{
+			str[i] = '\n';
+		}
+
+	}
+}
+
+void main()
+{
+	setlocale(LC_ALL, "ru");
+	srand(time(0));
+
+	char summin;
+	char* str = new char[100];
+	char* word = new char[100];
+
+	ifstream stroki("C:\\prog\\stroki.txt");//Чтение
+	if (!stroki) cout << "Ошибка открытия файла stroki.txt." << endl;
+
+	int i = 0;
+	while (stroki.get(summin))
+	{
+		str[i] = summin;
+		i++;
+	}
+	str[i] = '\0';
+	stroki.close();
+
+	int lenght = strlen(str);
+	cout << "Количество символов в тексте: " << lenght << endl;//Количество символов всех строк
+
+	Razdelenie(str, lenght);
+	Short_word(str, word, lenght);
+
+	cout << "  " << endl;
+	cout << str;
+	cout << "  " << endl;
+
+	delete[] str;
+	delete[] word;
+}
