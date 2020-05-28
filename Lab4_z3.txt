@@ -25,6 +25,7 @@ int main()
 	F[1] = 4;
 	G[1] = -2;
 	i = 1;
+	printf("F[%d] = %d\t\t G[%d] = %d\n", i, F[i], i, G[i]);
 	i = 2;
 
 	rek(F, G, i);
